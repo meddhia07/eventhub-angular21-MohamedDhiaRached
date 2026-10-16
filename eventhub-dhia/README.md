@@ -1,59 +1,88 @@
-# EventhubDhia
+# EventHub - Catalogue d'événements
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.27.
+Mini-projet Angular 21 : une application côté client pour consulter les événements d'une association étudiante (ateliers, conférences, sport, compétitions, rencontres), les filtrer, voir leur détail et gérer une liste de favoris. Les données sont définies dans le code TypeScript (aucune API, base de données ni authentification).
 
-## Development server
+## Utilisation de l'IA
 
-To start a local development server, run:
+Ce projet a été réalisé avec l'aide de l'assistant Claude (Anthropic), avec l'accord de l'enseignant. Le code a été généré par l'assistant puis relu et publié par l'étudiant.
 
-```bash
-ng serve
-```
+## Versions utilisées
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+| Outil | Version |
+| --- | --- |
+| Angular (core, router, common) | 21.2 |
+| Angular CLI | 21.2 |
+| TypeScript | 5.9 |
+| Node.js | 20.20 |
+| npm | 10.8 |
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Installation et lancement
 
 ```bash
-ng generate --help
+git clone https://github.com/meddhia07/eventhub-angular21-MohamedDhiaRached.git
+cd eventhub-angular21-MohamedDhiaRached/eventhub-dhia
+npm install --legacy-peer-deps
+npx ng serve
 ```
 
-## Building
+L'application est disponible sur http://localhost:4200.
+`--legacy-peer-deps` évite un bug de npm 10 (`Cannot read properties of null (reading 'edgesOut')`) rencontré à l'installation.
 
-To build the project run:
+Build de production : `npx ng build`.
 
-```bash
-ng build
+## Structure des composants
+
+```
+src/app/
+├── app.ts / app.config.ts / app.routes.ts   Composant racine, configuration, routes
+├── models/event.model.ts                    Interface EventItem
+├── data/events.data.ts                      Tableau des 8 événements
+└── components/
+    ├── header/          Header
+    ├── event-list/      EventList
+    ├── event-card/      EventCard
+    ├── event-details/   EventDetails
+    ├── not-found/       NotFound
+    └── about/           About (chargé en lazy loading)
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- **Header** : affiche le titre de l'application et le menu de navigation. `routerLinkActive` met en évidence la page courante.
+- **EventList** : page `/events`. Elle contient les Signals (événements, favoris, catégorie sélectionnée, recherche), le filtre de catégorie et affiche les cartes avec `@for`.
+- **EventCard** : carte d'un événement. Elle reçoit l'événement via `input()`, présente ses informations avec des pipes, et signale le clic sur le bouton favori au parent via `output()`.
+- **EventDetails** : page `/events/:id`. Elle récupère l'identifiant de la route avec `input()` et `withComponentInputBinding()`, et affiche un message si l'événement n'existe pas.
+- **NotFound** : page 404 affichée pour toute URL inconnue (`**`).
+- **About** : page de présentation `/about`, chargée à la demande avec `loadComponent()`.
 
-## Running unit tests
+## Fonctionnalités réalisées
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- Projet standalone, 8 événements, 5 catégories, 3 événements gratuits.
+- Liste avec `@for (...; track event.id)` et `@empty` (« Aucun événement disponible »).
+- Signals : liste, favoris, compteur calculé (`computed`), catégorie sélectionnée, texte de recherche.
+- Favoris : ajout/retrait via `output()` puis `update()` dans le parent, compteur, état visuel (`@if/@else` et `[class.active]`). Les favoris sont conservés dans le `localStorage`.
+- Filtre par catégorie (Tous, Atelier, Conférence, Sport, Compétition, Rencontre) et recherche par titre (permet aussi de tester la liste vide).
+- Pipes : `date` (en français), `currency`, `uppercase`.
+- Routes : `/` redirige vers `/events`, `/events/:id`, `/about` (lazy), `**` (NotFound).
+- Interface responsive (ordinateur et téléphone).
 
-```bash
-ng test
-```
+## Tests manuels
 
-## Running end-to-end tests
+| Cas | Résultat attendu |
+| --- | --- |
+| Affichage initial | 8 cartes, compteur de favoris à 0 (ou valeur sauvegardée) |
+| Filtre | Un clic sur « Sport » n'affiche que les événements sportifs |
+| Liste vide | Rechercher « zzz » affiche « Aucun événement disponible » |
+| Favoris | Le bouton bascule l'état de la carte et le compteur |
+| Détail | « Voir les détails » ouvre `/events/:id` |
+| Identifiant inexistant | `/events/999` affiche « Événement introuvable » |
+| Lien actif | L'entrée du menu de la page courante est surlignée |
+| URL inconnue | `/xyz` affiche la page 404 |
+| Lazy loading | Onglet Network : un chunk JS (`about`) est chargé à la première visite de `/about` |
 
-For end-to-end (e2e) testing, run:
+## Captures d'écran
 
-```bash
-ng e2e
-```
+À ajouter dans `docs/` puis référencer ici :
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- `docs/liste.png` : liste des événements avec le filtre
+- `docs/favoris.png` : cartes en favoris et compteur
+- `docs/detail.png` : page de détail
+- `docs/mobile.png` : affichage téléphone
