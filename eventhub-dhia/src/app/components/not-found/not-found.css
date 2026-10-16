@@ -1,0 +1,15 @@
+.nf {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+h1 {
+  font-size: 4rem;
+  margin: 0;
+  color: #4f46e5;
+}
+
+a {
+  color: #4f46e5;
+  font-weight: 600;
+}

@@ -1,0 +1,72 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+h1 {
+  margin: 0;
+}
+
+.counter {
+  background: #fef3c7;
+  color: #92400e;
+  font-weight: 700;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.2rem 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  border: 1px solid #c7d2fe;
+  background: #fff;
+  color: #3730a3;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.chip.active {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #fff;
+}
+
+.search {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  min-width: 220px;
+  font-size: 0.95rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #64748b;
+  padding: 2rem 0;
+  font-size: 1.1rem;
+}

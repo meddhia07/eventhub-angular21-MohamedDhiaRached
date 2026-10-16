@@ -1,1 +1,29 @@
-<p>event-details works!</p>
+@if (event(); as e) {
+  <article class="details">
+    <img [src]="e.imageUrl" [alt]="e.title" />
+    <div class="content">
+      <span class="badge">{{ e.category | uppercase }}</span>
+      <h1>{{ e.title }}</h1>
+      <ul class="info">
+        <li><strong>Date :</strong> {{ e.date | date: 'fullDate' }}</li>
+        <li><strong>Lieu :</strong> {{ e.place }}</li>
+        <li>
+          <strong>Prix :</strong>
+          @if (e.price === 0) {
+            Gratuit
+          } @else {
+            {{ e.price | currency: 'EUR' : 'symbol' : '1.0-2' }}
+          }
+        </li>
+      </ul>
+      <p>{{ e.description }}</p>
+      <a class="back" routerLink="/events">← Retour aux événements</a>
+    </div>
+  </article>
+} @else {
+  <div class="not-found">
+    <h1>Événement introuvable</h1>
+    <p>Aucun événement ne correspond à l'identifiant « {{ id() }} ».</p>
+    <a class="back" routerLink="/events">← Retour aux événements</a>
+  </div>
+}

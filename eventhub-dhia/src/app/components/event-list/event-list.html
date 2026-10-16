@@ -1,1 +1,40 @@
-<p>event-list works!</p>
+<section>
+  <div class="toolbar">
+    <h1>Événements</h1>
+    <span class="counter">★ Favoris : {{ favoritesCount() }}</span>
+  </div>
+
+  <div class="filters">
+    <div class="chips">
+      @for (category of categories(); track category) {
+        <button
+          type="button"
+          class="chip"
+          [class.active]="category === selectedCategory()"
+          (click)="selectCategory(category)"
+        >
+          {{ category }}
+        </button>
+      }
+    </div>
+    <input
+      type="search"
+      class="search"
+      placeholder="Rechercher un événement..."
+      [value]="search()"
+      (input)="onSearch($event)"
+    />
+  </div>
+
+  <div class="grid">
+    @for (event of filteredEvents(); track event.id) {
+      <app-event-card
+        [event]="event"
+        [isFavorite]="isFavorite(event.id)"
+        (toggleFavorite)="toggleFavorite($event)"
+      />
+    } @empty {
+      <p class="empty">Aucun événement disponible</p>
+    }
+  </div>
+</section>

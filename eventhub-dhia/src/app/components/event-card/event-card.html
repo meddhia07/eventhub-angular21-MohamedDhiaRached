@@ -1,1 +1,25 @@
-<p>event-card works!</p>
+<article class="card" [class.favorite]="isFavorite()">
+  <img [src]="event().imageUrl" [alt]="event().title" class="card-img" />
+  <div class="card-body">
+    <span class="badge">{{ event().category | uppercase }}</span>
+    <h3>{{ event().title }}</h3>
+    <p class="meta">{{ event().date | date: 'fullDate' }} · {{ event().place }}</p>
+    <p class="price">
+      @if (event().price === 0) {
+        Gratuit
+      } @else {
+        {{ event().price | currency: 'EUR' : 'symbol' : '1.0-2' }}
+      }
+    </p>
+    <div class="actions">
+      <a class="link" [routerLink]="['/events', event().id]">Voir les détails</a>
+      <button type="button" class="fav-btn" [class.active]="isFavorite()" (click)="onToggle()">
+        @if (isFavorite()) {
+          ★ Retirer des favoris
+        } @else {
+          ☆ Ajouter aux favoris
+        }
+      </button>
+    </div>
+  </div>
+</article>
